@@ -80,26 +80,29 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     // ป้อนชื่อรายการ
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: 'Add a new task......',
+                      hintText: 'Add a new task...',
+                      prefixIcon: Icon(Icons.edit, color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
                       ),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: _addTodo, // เพิ่มเมื่อกดปุ่ม "+"
+                  onPressed: _addTodo,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 53, 168, 190),
+                    backgroundColor: const Color.fromARGB(255, 82, 134, 198),
+                    foregroundColor: Colors.white,
+                    elevation: 3,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                        borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: const Icon(Icons.add),
-                ),
+                  child: const Icon(Icons.add, size: 28),
+                )
               ],
             ),
           ),
@@ -118,27 +121,37 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 6),
                         child: Card(
+                          elevation: 4, //ความสูงของเงา
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                              //ทำให้มุมของ Card โค้งมน
+                              borderRadius: BorderRadius.circular(16)),
+                          color: Colors.white, //สีพื้นหลังของ Card เป็น สีขาว
                           child: CheckboxListTile(
-                            //แสดงรายการเป็น CheckboxListTile
-                            value: todo.completed,
-                            onChanged: (_) => _toggleComplete(todo),
+                            //ใช้แสดงรายการแบบมี checkbox + ข้อความ + widget เสริมด้านขวา
+                            value: todo
+                                .completed, //กำหนดว่าช่อง checkbox ถูกติ๊กหรือยัง
+                            onChanged: (_) => _toggleComplete(
+                                todo), //ถ้ามีการเปลี่ยนสถานะ (ติ๊กหรือยกเลิกติ๊ก) จะเรียกฟังก์ชัน _toggleComplete(todo)
                             title: Text(
+                              //แสดงชื่อของ To-Do
                               todo.title,
                               style: TextStyle(
                                 decoration: todo.completed
                                     ? TextDecoration
-                                        .lineThrough //ถ้าทำเสร็จ: แสดงตัวอักษรขีดฆ่า
+                                        .lineThrough //ถ้าทำเสร็จ (completed == true) ให้ขีดฆ่าข้อความ
                                     : TextDecoration.none,
-                                color: todo.completed ? Colors.grey : null,
+                                fontSize: 16,
+                                color: todo.completed
+                                    ? Colors.grey
+                                    : Colors
+                                        .black, //ถ้าทำเสร็จ ให้ข้อความเป็นสีเทา
                               ),
                             ),
                             secondary: IconButton(
-                              //รวมปุ่มลบงาน
-                              icon: const Icon(Icons.delete,
+                              icon: const Icon(Icons.delete, //เป็นปุ่มถังขยะ
                                   color: Colors.redAccent),
-                              onPressed: () => _deleteTodo(todo.id),
+                              onPressed: () => _deleteTodo(todo
+                                  .id), //ถ้ากดปุ่มลบ จะเรียก _deleteTodo() เพื่อลบ To-Do ออก
                             ),
                           ),
                         ),
